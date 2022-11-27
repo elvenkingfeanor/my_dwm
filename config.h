@@ -60,12 +60,21 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
+//st as default terminal
 static const char *termcmd[]  = { "st", NULL };
+//volume controls
+static const char *upvol[] = { "/usr/bin/amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
+static const char *downvol[] = { "/usr/bin/amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
+static const char *mute[] = { "/usr/bin/amixer", "-q", "set", "Master", "toggle", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_x,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,             		XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,             		XK_F3, 	   spawn,          {.v = upvol } },
+	{ MODKEY,             		XK_F2, 	   spawn,          {.v = downvol } },
+	{ MODKEY,             		XK_F1, 	   spawn,          {.v = mute } },
+	{ MODKEY,			XK_h,	   spawn,	   SHCMD("st -e /usr/bin/htop") },
 	{ MODKEY,             		XK_c, 	   spawn,          SHCMD("st -e /usr/bin/calc") },
 	{ MODKEY,             		XK_q, 	   spawn,          SHCMD("/usr/bin/tor-browser") },
 	{ MODKEY,             		XK_w, 	   spawn,          SHCMD("st -e /usr/bin/lynx") },
@@ -79,8 +88,7 @@ static const Key keys[] = {
 	{ MODKEY,             		XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
 	{ MODKEY,             		XK_y, 	   spawn,          SHCMD("st -e /usr/bin/youtube-viewer") },
 	{ MODKEY,             		XK_d, 	   spawn,          SHCMD("/usr/bin/zathura") },
-	{ MODKEY,             		XK_h, 	   spawn,          SHCMD("/usr/bin/htop") },
-	{ MODKEY,             		XK_e, 	   spawn,          SHCMD("/usr/bin/nvim") },
+	{ MODKEY,             		XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
 	{ MODKEY,             		XK_i, 	   spawn,          SHCMD("/usr/bin/inkscape") },
 	{ MODKEY,             		XK_z, 	   spawn,          SHCMD("/usr/bin/filezilla") },
 
