@@ -87,10 +87,10 @@ static const Key keys[] = {
 	{ MODKEY,             		XK_t, 	   spawn,          SHCMD("/usr/bin/transmission-gtk") },
 	{ MODKEY,             		XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
 	{ MODKEY,             		XK_y, 	   spawn,          SHCMD("st -e /usr/bin/youtube-viewer") },
-	{ MODKEY,             		XK_d, 	   spawn,          SHCMD("/usr/bin/zathura") },
+	{ MODKEY,             		XK_z, 	   spawn,          SHCMD("/usr/bin/zathura") },
 	{ MODKEY,             		XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
 	{ MODKEY,             		XK_i, 	   spawn,          SHCMD("/usr/bin/inkscape") },
-	{ MODKEY,             		XK_z, 	   spawn,          SHCMD("/usr/bin/filezilla") },
+	{ MODKEY|ShiftMask,     	XK_z, 	   spawn,          SHCMD("/usr/bin/filezilla") },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -109,8 +109,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_j,      focusstack,     {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_k,      incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_j,      incnmaster,     {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY|ShiftMask,             XK_i,      setmfact,       {.f = +0.05} },
+	{ MODKEY,             		XK_d,      setmfact,       {.f = -0.05} },
+	{ MODKEY|ShiftMask,             XK_d,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
@@ -118,12 +118,12 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_F12,      view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_F12,      tag,            {.ui = ~0 } },
+	/*{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },*/
+	/*{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },*/
+	/*{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },*/
+	/*{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },*/
 
 };
 
