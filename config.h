@@ -21,6 +21,20 @@ static char *colors[][3] = {
        [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
 };
 
+typedef struct {
+	const char *name;
+	const void *cmd;
+} Sp;
+const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd2[] = {"st", "-n", "spnote",  "-g", "144x41", "-e", "nvim", NULL };
+const char *spcmd3[] = {"st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"spterm",      spcmd1},
+	{"spnote",      spcmd2},
+	{"spcalc",      spcmd3},
+};
+
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -30,10 +44,14 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "OpenSCAD", NULL,     NULL,           0,         1,          0,           0,        -1 },
-	{ "Vieb",    NULL,     NULL,           1 << 2,    0,          0,          -1,        -1 },
-	{ "st-256color", NULL,  NULL,           0,         0,          1,           0,        -1 },
-	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+	{ "OpenSCAD", NULL,     NULL,           1 << 8,         1,          0,           0,        -1 },
+	{ "Transmission-gtk", NULL,     NULL,   1 << 8,         1,          0,           0,        -1 },
+	{ "Vieb",    NULL,     NULL,            0,    		0,          0,          -1,        -1 },
+	{ "st-256color", NULL,  NULL,           0,         	0,          1,           0,        -1 },
+	{ NULL,      NULL,     "Event Tester",  0,         	0,          0,           1,        -1 }, /* xev */
+	{ NULL,	    "spterm",	NULL,		SPTAG(0),	1,	    1,		 1,	   -1 },
+	{ NULL,	    "spnote",	NULL,		SPTAG(1),	1,	    1,           1,	   -1 },
+	{ NULL,	    "spcalc",	NULL,		SPTAG(2),	1,          1,		 1,	   -1 },
 };
 
 /* layout(s) */
@@ -49,6 +67,8 @@ static const Layout layouts[] = {
 	{ "[M]",      monocle },
 };
 
+#include <X11/XF86keysym.h>
+
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
@@ -63,9 +83,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-//st as default terminal
 static const char *termcmd[]  = { "st", NULL };
-//volume controls
 static const char *upvol[] = { "/usr/bin/amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
 static const char *downvol[] = { "/usr/bin/amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
 static const char *mute[] = { "/usr/bin/amixer", "-q", "set", "Master", "toggle", NULL };
@@ -74,27 +92,30 @@ static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_x,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,             		XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,            		XK_grave,  togglescratch,  {.ui = 0 } },
+	{ MODKEY|ShiftMask,            	XK_grave,  togglescratch,  {.ui = 1 } },
+	{ MODKEY,            XF86XK_Calculator,	   togglescratch,  {.ui = 2 } },
 	{ MODKEY,             		XK_F3, 	   spawn,          {.v = upvol } },
 	{ MODKEY,             		XK_F2, 	   spawn,          {.v = downvol } },
 	{ MODKEY,             		XK_F1, 	   spawn,          {.v = mute } },
 	{ MODKEY,             		XK_Print,  spawn,          SHCMD("st -e /usr/bin/scrot") },
-	{ MODKEY|ShiftMask,		XK_x,	   spawn,	   SHCMD("/usr/bin/urxvt") },
+	{ MODKEY,			XK_u,	   spawn,	   SHCMD("/usr/bin/urxvt") },
 	{ MODKEY,			XK_h,	   spawn,	   SHCMD("st -e /usr/bin/htop") },
-	{ MODKEY,             		XK_c, 	   spawn,          SHCMD("st -e /usr/bin/calc") },
-	{ MODKEY,             		XK_q, 	   spawn,          SHCMD("/usr/bin/tor-browser") },
+	{ MODKEY,             		XK_t, 	   spawn,          SHCMD("/usr/bin/tor-browser") },
+	{ MODKEY|ShiftMask,            	XK_t, 	   spawn,          SHCMD("/usr/bin/transmission-gtk") },
 	{ MODKEY,             		XK_w, 	   spawn,          SHCMD("st -e /usr/bin/w3m -config $XDG_CONFIG_HOME/w3m/config") },
+	{ MODKEY|ShiftMask,		XK_w,	   spawn,	   SHCMD("st -e /usr/bin/iwctl") },
 	{ MODKEY,             		XK_f, 	   spawn,          SHCMD("/usr/bin/vieb") },
 	{ MODKEY,             		XK_p, 	   spawn,          SHCMD("/usr/bin/netsurf") },
-	{ MODKEY|ShiftMask,        	XK_n, 	   spawn,          SHCMD("st -e /usr/bin/newsboat") },
-	{ MODKEY,             		XK_s, 	   spawn,          SHCMD("st -e /usr/bin/sc-im") },
-	{ MODKEY|ShiftMask,        	XK_s, 	   spawn,          SHCMD("/usr/bin/signal-desktop") },
-	{ MODKEY,             		XK_t, 	   spawn,          SHCMD("/usr/bin/transmission-gtk") },
-	{ MODKEY|ShiftMask,      	XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
+	{ MODKEY,        		XK_n, 	   spawn,          SHCMD("st -e /usr/bin/newsboat") },
+	{ MODKEY|ShiftMask,            	XK_c, 	   spawn,          SHCMD("st -e /usr/bin/sc-im") },
+	{ MODKEY,        		XK_m, 	   spawn,          SHCMD("/usr/bin/signal-desktop") },
 	{ MODKEY,             		XK_y, 	   spawn,          SHCMD("st -e /usr/bin/youtube-viewer") },
 	{ MODKEY,             		XK_z, 	   spawn,          SHCMD("/usr/bin/zathura") },
 	{ MODKEY,             		XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
 	{ MODKEY,             		XK_i, 	   spawn,          SHCMD("/usr/bin/inkscape") },
 	{ MODKEY|ShiftMask,     	XK_z, 	   spawn,          SHCMD("/usr/bin/filezilla") },
+	{ MODKEY|ShiftMask,      	XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -106,9 +127,9 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 
+	{ MODKEY,	             	XK_q,      killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_k,      incnmaster,     {.i = +1 } },
@@ -141,7 +162,7 @@ static const Button buttons[] = {
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
