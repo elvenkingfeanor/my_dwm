@@ -83,7 +83,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "/usr/local/bin/st", NULL };
 static const char *upvol[] = { "/usr/bin/amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
 static const char *downvol[] = { "/usr/bin/amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
 static const char *mute[] = { "/usr/bin/amixer", "-q", "set", "Master", "toggle", NULL };
@@ -91,31 +91,36 @@ static const char *mute[] = { "/usr/bin/amixer", "-q", "set", "Master", "toggle"
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_x,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,             		XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,            		XK_grave,  togglescratch,  {.ui = 0 } },
+	{ MODKEY,             		    XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,            		    XK_grave,  togglescratch,  {.ui = 0 } },
 	{ MODKEY|ShiftMask,            	XK_grave,  togglescratch,  {.ui = 1 } },
 	{ MODKEY,            XF86XK_Calculator,	   togglescratch,  {.ui = 2 } },
-	{ MODKEY,             		XK_F3, 	   spawn,          {.v = upvol } },
-	{ MODKEY,             		XK_F2, 	   spawn,          {.v = downvol } },
-	{ MODKEY,             		XK_F1, 	   spawn,          {.v = mute } },
-	{ MODKEY,             		XK_Print,  spawn,          SHCMD("st -e /usr/bin/scrot") },
-	{ MODKEY,			XK_u,	   spawn,	   SHCMD("/usr/bin/urxvt") },
-	{ MODKEY,			XK_h,	   spawn,	   SHCMD("st -e /usr/bin/htop") },
-	{ MODKEY,             		XK_t, 	   spawn,          SHCMD("/usr/bin/tor-browser") },
-	{ MODKEY|ShiftMask,            	XK_t, 	   spawn,          SHCMD("/usr/bin/transmission-gtk") },
-	{ MODKEY,             		XK_w, 	   spawn,          SHCMD("st -e /usr/bin/w3m -config $XDG_CONFIG_HOME/w3m/config") },
-	{ MODKEY|ShiftMask,		XK_w,	   spawn,	   SHCMD("st -e /usr/bin/iwctl") },
-	{ MODKEY,             		XK_f, 	   spawn,          SHCMD("/usr/bin/vieb") },
-	{ MODKEY,             		XK_p, 	   spawn,          SHCMD("/usr/bin/netsurf") },
-	{ MODKEY,        		XK_n, 	   spawn,          SHCMD("st -e /usr/bin/newsboat") },
-	{ MODKEY|ShiftMask,            	XK_c, 	   spawn,          SHCMD("st -e /usr/bin/sc-im") },
-	{ MODKEY,        		XK_m, 	   spawn,          SHCMD("/usr/bin/signal-desktop") },
-	{ MODKEY,             		XK_y, 	   spawn,          SHCMD("st -e /usr/bin/youtube-viewer") },
-	{ MODKEY,             		XK_z, 	   spawn,          SHCMD("/usr/bin/zathura") },
-	{ MODKEY,             		XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
-	{ MODKEY,             		XK_i, 	   spawn,          SHCMD("/usr/bin/inkscape") },
-	{ MODKEY|ShiftMask,     	XK_z, 	   spawn,          SHCMD("/usr/bin/filezilla") },
-	{ MODKEY|ShiftMask,      	XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
+	{ MODKEY,             		    XK_F3, 	   spawn,          {.v = upvol } },
+	{ MODKEY,             		    XK_F2, 	   spawn,          {.v = downvol } },
+	{ MODKEY,             		    XK_F1, 	   spawn,          {.v = mute } },
+	{ MODKEY,             		    XK_Print,  spawn,          {.v = (const char*[]){ "/usr/bin/scrot", NULL } } },
+	{ MODKEY,        		        XK_F10,    spawn,          SHCMD("/usr/bin/signal-desktop") },
+	{ MODKEY,            	        XK_F9, 	   spawn,          SHCMD("/usr/bin/transmission-gtk") },
+	{ MODKEY,		                XK_F8,	   spawn,	       SHCMD("st -e /usr/bin/iwctl") },
+	{ MODKEY,			            XK_u,	   spawn,	       SHCMD("/usr/bin/urxvt") },
+	{ MODKEY,			            XK_h,	   spawn,	       SHCMD("st -e /usr/bin/htop") },
+	{ MODKEY,             		    XK_t, 	   spawn,          SHCMD("/usr/bin/tor-browser") },
+    { MODKEY,        		        XK_g, 	   spawn,          SHCMD("/usr/bin/librewolf") },
+	{ MODKEY,             		    XK_w, 	   spawn,          SHCMD("st -e /usr/bin/w3m -config $XDG_CONFIG_HOME/w3m/config") },
+    { MODKEY|ShiftMask,             XK_w, 	   spawn,          SHCMD("st -e /usr/bin/lynx") },
+	{ MODKEY,             		    XK_f, 	   spawn,          SHCMD("/usr/bin/vieb") },
+	{ MODKEY,             		    XK_p, 	   spawn,          SHCMD("/usr/bin/netsurf") },
+	{ MODKEY,        		        XK_n, 	   spawn,          SHCMD("st -e /usr/bin/newsboat") },
+	{ MODKEY,             		    XK_y, 	   spawn,          SHCMD("st -e /usr/bin/youtube-viewer") },
+	{ MODKEY,             		    XK_r, 	   spawn,          SHCMD("/usr/bin/zathura") },
+	{ MODKEY,             		    XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
+    { MODKEY,     	                XK_m, 	   spawn,          SHCMD("st -e /usr/bin/neomutt") },
+	{ MODKEY,             		    XK_i, 	   spawn,          SHCMD("/usr/bin/inkscape") },
+	{ MODKEY,     	                XK_z, 	   spawn,          SHCMD("/usr/bin/filezilla") },
+	{ MODKEY|ShiftMask,      	    XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
+	{ MODKEY,            	        XK_b, 	   spawn,          {.v = (const char*[]){ "bookmarkthis", NULL } } },	
+    { MODKEY,            	        XK_Insert, spawn,          SHCMD("/usr/bin/grep -v '^#' ~/.local/share/bookmarks | /usr/local/bin/dmenu -i -l 20 | /usr/bin/cut -d' ' -f1 | /usr/bin/xclip -selection clipboard") },
+
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -127,14 +132,14 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 
-	{ MODKEY,	             	XK_q,      killclient,     {0} },
+	{ MODKEY,	             	    XK_q,      killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_k,      incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_j,      incnmaster,     {.i = -1 } },
-	{ MODKEY,             		XK_d,      setmfact,       {.f = -0.05} },
+	{ MODKEY,             		    XK_d,      setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_d,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
