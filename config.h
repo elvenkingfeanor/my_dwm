@@ -45,7 +45,6 @@ static const Rule rules[] = {
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "OpenSCAD", NULL,     NULL,           1 << 8,         1,          0,           0,        -1 },
-	{ "Transmission-gtk", NULL,     NULL,   1 << 8,         1,          0,           0,        -1 },
 	{ "Vieb",    NULL,     NULL,            0,    		0,          0,          -1,        -1 },
 	{ "st-256color", NULL,  NULL,           0,         	0,          1,           0,        -1 },
 	{ NULL,      NULL,     "Event Tester",  0,         	0,          0,           1,        -1 }, /* xev */
@@ -87,6 +86,8 @@ static const char *termcmd[]  = { "/usr/local/bin/st", NULL };
 static const char *upvol[] = { "/usr/bin/amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
 static const char *downvol[] = { "/usr/bin/amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
 static const char *mute[] = { "/usr/bin/amixer", "-q", "set", "Master", "toggle", NULL };
+static const char *upbrtt[] = { "/usr/bin/light", "-A", "5", NULL };
+static const char *downbrtt[] = { "/usr/bin/light", "-U", "5", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -98,24 +99,27 @@ static const Key keys[] = {
 	{ MODKEY,             		    XK_F3, 	   spawn,          {.v = upvol } },
 	{ MODKEY,             		    XK_F2, 	   spawn,          {.v = downvol } },
 	{ MODKEY,             		    XK_F1, 	   spawn,          {.v = mute } },
+    { MODKEY,                       XK_F5,     spawn,          {.v = downbrtt } },
+    { MODKEY,                       XK_F6,     spawn,          {.v = upbrtt } },
 	{ MODKEY,             		    XK_Print,  spawn,          {.v = (const char*[]){ "/usr/bin/scrot", NULL } } },
 	{ MODKEY,        		        XK_F10,    spawn,          SHCMD("/usr/bin/signal-desktop") },
-	{ MODKEY,            	        XK_F9, 	   spawn,          SHCMD("/usr/bin/transmission-gtk") },
 	{ MODKEY,		                XK_F8,	   spawn,	       SHCMD("st -e /usr/bin/iwctl") },
 	{ MODKEY,			            XK_u,	   spawn,	       SHCMD("/usr/bin/urxvt") },
+    { MODKEY|ShiftMask,             XK_u, 	   spawn,          SHCMD("/usr/bin/xterm") },
 	{ MODKEY,			            XK_h,	   spawn,	       SHCMD("st -e /usr/bin/htop") },
+    { MODKEY,        		        XK_f, 	   spawn,          SHCMD("/usr/bin/librewolf") },
+	{ MODKEY,    		            XK_p, 	   spawn,          SHCMD("/usr/bin/netsurf") },
+    { MODKEY,             		    XK_g, 	   spawn,          SHCMD("/usr/bin/chromium") },
+	{ MODKEY|ShiftMask,    		    XK_g, 	   spawn,          SHCMD("/usr/bin/vieb") },
 	{ MODKEY,             		    XK_t, 	   spawn,          SHCMD("/usr/bin/tor-browser") },
-    { MODKEY,        		        XK_g, 	   spawn,          SHCMD("/usr/bin/librewolf") },
 	{ MODKEY,             		    XK_w, 	   spawn,          SHCMD("st -e /usr/bin/w3m -config $XDG_CONFIG_HOME/w3m/config") },
     { MODKEY|ShiftMask,             XK_w, 	   spawn,          SHCMD("st -e /usr/bin/lynx") },
-	{ MODKEY,             		    XK_f, 	   spawn,          SHCMD("/usr/bin/vieb") },
-	{ MODKEY,             		    XK_p, 	   spawn,          SHCMD("/usr/bin/netsurf") },
 	{ MODKEY,        		        XK_n, 	   spawn,          SHCMD("st -e /usr/bin/newsboat") },
 	{ MODKEY,             		    XK_y, 	   spawn,          SHCMD("st -e /usr/bin/youtube-viewer") },
+	{ MODKEY,             		    XK_s, 	   spawn,          SHCMD("st -e /usr/bin/mocp -M $XDG_CONFIG_HOME/moc") },
 	{ MODKEY,             		    XK_r, 	   spawn,          SHCMD("/usr/bin/zathura") },
 	{ MODKEY,             		    XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
     { MODKEY,     	                XK_m, 	   spawn,          SHCMD("st -e /usr/bin/neomutt") },
-	{ MODKEY,             		    XK_i, 	   spawn,          SHCMD("/usr/bin/inkscape") },
 	{ MODKEY,     	                XK_z, 	   spawn,          SHCMD("/usr/bin/filezilla") },
 	{ MODKEY|ShiftMask,      	    XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
 	{ MODKEY,            	        XK_b, 	   spawn,          {.v = (const char*[]){ "bookmarkthis", NULL } } },	
