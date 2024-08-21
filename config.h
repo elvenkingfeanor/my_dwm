@@ -9,12 +9,12 @@ static int topbar             = 1;        /* 0 means bottom bar */
 static char font[]            = "JetBrainsMono:size=11:antialias=true";
 static char dmenufont[]       = "JetBrainsMono:size=11:antialias=true";
 static const char *fonts[]          = { font };
-static char normbgcolor[]           = "#002b36";
-static char normbordercolor[]       = "#657b83";
-static char normfgcolor[]           = "#93a1a1";
-static char selfgcolor[]            = "#fdf6e3";
-static char selbordercolor[]        = "#268bd2";
-static char selbgcolor[]            = "#268bd2";
+static char normbgcolor[]           = "#fbf1c7";
+static char normbordercolor[]       = "#7c6f64";
+static char normfgcolor[]           = "#3c3836";
+static char selfgcolor[]            = "#f9f5d7";
+static char selbordercolor[]        = "#d79921";
+static char selbgcolor[]            = "#98971a";
 static char *colors[][3] = {
        /*               fg           bg           border   */
        [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
@@ -92,36 +92,25 @@ static const char *downbrtt[] = { "/usr/bin/light", "-U", "5", NULL };
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_x,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,             		    XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,            		    XK_grave,  togglescratch,  {.ui = 0 } },
+	{ MODKEY,			XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,			XK_grave,  togglescratch,  {.ui = 0 } },
 	{ MODKEY|ShiftMask,            	XK_grave,  togglescratch,  {.ui = 1 } },
-	{ MODKEY,            XF86XK_Calculator,	   togglescratch,  {.ui = 2 } },
-	{ MODKEY,             		    XK_F3, 	   spawn,          {.v = upvol } },
-	{ MODKEY,             		    XK_F2, 	   spawn,          {.v = downvol } },
-	{ MODKEY,             		    XK_F1, 	   spawn,          {.v = mute } },
-    { MODKEY,                       XK_F5,     spawn,          {.v = downbrtt } },
-    { MODKEY,                       XK_F6,     spawn,          {.v = upbrtt } },
-	{ MODKEY,             		    XK_Print,  spawn,          {.v = (const char*[]){ "/usr/bin/scrot", NULL } } },
-	{ MODKEY,			            XK_u,	   spawn,	       SHCMD("/usr/bin/urxvt") },
-    { MODKEY|ShiftMask,             XK_u, 	   spawn,          SHCMD("/usr/bin/xterm") },
-	{ MODKEY,			            XK_h,	   spawn,	       SHCMD("st -e /usr/bin/htop") },
-	{ MODKEY|ShiftMask,    		    XK_w, 	   spawn,          SHCMD("st -e /usr/bin/w3m -config $XDG_CONFIG_HOME/w3m/config") },
-    { MODKEY,                       XK_w, 	   spawn,          SHCMD("st -e /usr/bin/lynx") },
-    { MODKEY,        		        XK_f, 	   spawn,          SHCMD("/usr/bin/librewolf") },
-	{ MODKEY,    		            XK_p, 	   spawn,          SHCMD("/usr/bin/netsurf") },
-    { MODKEY,             		    XK_g, 	   spawn,          SHCMD("/usr/bin/chromium") },
-	{ MODKEY|ShiftMask,    		    XK_t, 	   spawn,          SHCMD("/usr/bin/qbittorrent") },
-	{ MODKEY,             		    XK_t, 	   spawn,          SHCMD("/usr/bin/tor-browser") },
-	{ MODKEY,        		        XK_n, 	   spawn,          SHCMD("st -e /usr/bin/newsboat") },
-	{ MODKEY,             		    XK_y, 	   spawn,          SHCMD("st -e /usr/bin/youtube-viewer") },
-	{ MODKEY,             		    XK_s, 	   spawn,          SHCMD("st -e /usr/bin/mocp -M $XDG_CONFIG_HOME/moc") },
-	{ MODKEY,             		    XK_r, 	   spawn,          SHCMD("/usr/bin/zathura") },
-	{ MODKEY,             		    XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
-    { MODKEY,     	                XK_m, 	   spawn,          SHCMD("st -e /usr/bin/neomutt") },
-	{ MODKEY,     	                XK_z, 	   spawn,          SHCMD("/usr/bin/filezilla") },
-	{ MODKEY|ShiftMask,      	    XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
+	{ MODKEY,		XK_Num_Lock,	   togglescratch,  {.ui = 2 } },
+	{ MODKEY,			XK_F3, 	   spawn,          {.v = upvol } },
+	{ MODKEY,			XK_F2, 	   spawn,          {.v = downvol } },
+	{ MODKEY,			XK_F1, 	   spawn,          {.v = mute } },
+	{ MODKEY,                       XK_F5,     spawn,          {.v = downbrtt } },
+	{ MODKEY,                       XK_F6,     spawn,          {.v = upbrtt } },
+	{ MODKEY,			XK_Print,  spawn,          {.v = (const char*[]){ "/usr/bin/scrot", NULL } } },
+	{ MODKEY,		        XK_h,	   spawn,	   SHCMD("st -e /usr/bin/htop") },
+	{ MODKEY,        	        XK_f, 	   spawn,          SHCMD("/usr/bin/librewolf") },
+	{ MODKEY,			XK_g, 	   spawn,          SHCMD("/usr/bin/chromium") },
+	{ MODKEY,			XK_y, 	   spawn,          SHCMD("st -e /usr/bin/youtube-viewer") },
+	{ MODKEY,			XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
+	{ MODKEY,     	                XK_m, 	   spawn,          SHCMD("st -e /usr/bin/neomutt") },
+	{ MODKEY|ShiftMask,		XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
 	{ MODKEY,            	        XK_b, 	   spawn,          {.v = (const char*[]){ "bookmarkthis", NULL } } },	
-    { MODKEY,            	        XK_Insert, spawn,          SHCMD("/usr/bin/grep -v '^#' ~/.local/share/bookmarks | /usr/local/bin/dmenu -i -l 20 | /usr/bin/cut -d' ' -f1 | /usr/bin/xclip -selection clipboard") },
+	{ MODKEY,            	        XK_Insert, spawn,          SHCMD("/usr/bin/grep -v '^#' ~/.local/share/bookmarks | /usr/local/bin/dmenu -i -l 20 | /usr/bin/cut -d' ' -f1 | /usr/bin/xclip -selection clipboard") },
 
 
 	TAGKEYS(                        XK_1,                      0)
@@ -134,14 +123,14 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 
-	{ MODKEY,	             	    XK_q,      killclient,     {0} },
+	{ MODKEY,	                XK_q,      killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_k,      incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_j,      incnmaster,     {.i = -1 } },
-	{ MODKEY,             		    XK_d,      setmfact,       {.f = -0.05} },
+	{ MODKEY,			XK_d,      setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_d,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
