@@ -83,9 +83,9 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, "-l", "20", NULL };
 static const char *termcmd[]  = { "/usr/local/bin/st", NULL };
-static const char *upvol[] = { "/usr/bin/amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
-static const char *downvol[] = { "/usr/bin/amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
-static const char *mute[] = { "/usr/bin/amixer", "-q", "set", "Master", "toggle", NULL };
+static const char *upvol[] = { "/usr/bin/pamixer", "-u", "-i", "5", NULL };
+static const char *downvol[] = { "/usr/bin/pamixer", "-u", "-d", "5", NULL };
+static const char *mute[] = { "/usr/bin/pamixer", "-t", NULL };
 static const char *upbrtt[] = { "/usr/bin/light", "-A", "5", NULL };
 static const char *downbrtt[] = { "/usr/bin/light", "-U", "5", NULL };
 
@@ -104,10 +104,10 @@ static const Key keys[] = {
 	{ MODKEY,			XK_Print,  spawn,          {.v = (const char*[]){ "/usr/bin/scrot", NULL } } },
 	{ MODKEY,		        XK_h,	   spawn,	   SHCMD("st -e /usr/bin/htop") },
 	{ MODKEY,        	        XK_f, 	   spawn,          SHCMD("/usr/bin/librewolf") },
-	{ MODKEY,			XK_g, 	   spawn,          SHCMD("/usr/bin/chromium") },
-	{ MODKEY,			XK_y, 	   spawn,          SHCMD("st -e /usr/bin/youtube-viewer") },
+	{ MODKEY,			XK_g, 	   spawn,          SHCMD("/usr/bin/brave") },
+	{ MODKEY,			XK_y, 	   spawn,          SHCMD("st -e /usr/bin/vendor_perl/youtube-viewer") },
 	{ MODKEY,			XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
-	{ MODKEY,     	                XK_m, 	   spawn,          SHCMD("st -e /usr/bin/neomutt") },
+	{ MODKEY,     	                XK_m, 	   spawn,          SHCMD("st -e /usr/bin/claws-mail") },
 	{ MODKEY|ShiftMask,		XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
 	{ MODKEY,            	        XK_b, 	   spawn,          {.v = (const char*[]){ "bookmarkthis", NULL } } },	
 	{ MODKEY,            	        XK_Insert, spawn,          SHCMD("/usr/bin/grep -v '^#' ~/.local/share/bookmarks | /usr/local/bin/dmenu -i -l 20 | /usr/bin/cut -d' ' -f1 | /usr/bin/xclip -selection clipboard") },
