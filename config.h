@@ -9,10 +9,10 @@ static int topbar             = 1;        /* 0 means bottom bar */
 static char font[]            = "JetBrainsMono:size=11:antialias=true";
 static char dmenufont[]       = "JetBrainsMono:size=11:antialias=true";
 static const char *fonts[]          = { font };
-static char normbgcolor[]           = "#fbf1c7";
-static char normbordercolor[]       = "#7c6f64";
-static char normfgcolor[]           = "#3c3836";
-static char selfgcolor[]            = "#f9f5d7";
+static char normbgcolor[]           = "#282828";
+static char normbordercolor[]       = "#a89984";
+static char normfgcolor[]           = "#ebdbb2";
+static char selfgcolor[]            = "#1d2021";
 static char selbordercolor[]        = "#d79921";
 static char selbgcolor[]            = "#98971a";
 static char *colors[][3] = {
@@ -44,8 +44,6 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "OpenSCAD", NULL,     NULL,           1 << 8,         1,          0,           0,        -1 },
-	{ "Vieb",    NULL,     NULL,            0,    		0,          0,          -1,        -1 },
 	{ "st-256color", NULL,  NULL,           0,         	0,          1,           0,        -1 },
 	{ NULL,      NULL,     "Event Tester",  0,         	0,          0,           1,        -1 }, /* xev */
 	{ NULL,	    "spterm",	NULL,		SPTAG(0),	1,	    1,		 1,	   -1 },
@@ -86,6 +84,7 @@ static const char *termcmd[]  = { "/usr/local/bin/st", NULL };
 static const char *upvol[] = { "/usr/bin/pamixer", "-u", "-i", "5", NULL };
 static const char *downvol[] = { "/usr/bin/pamixer", "-u", "-d", "5", NULL };
 static const char *mute[] = { "/usr/bin/pamixer", "-t", NULL };
+static const char *mic[] = { "/usr/bin/amixer", "-q", "set", "Capture", "toggle", NULL };
 static const char *upbrtt[] = { "/usr/bin/light", "-A", "5", NULL };
 static const char *downbrtt[] = { "/usr/bin/light", "-U", "5", NULL };
 
@@ -99,6 +98,7 @@ static const Key keys[] = {
 	{ MODKEY,			XK_F3, 	   spawn,          {.v = upvol } },
 	{ MODKEY,			XK_F2, 	   spawn,          {.v = downvol } },
 	{ MODKEY,			XK_F1, 	   spawn,          {.v = mute } },
+	{ MODKEY,			XK_F4, 	   spawn,          {.v = mic } },
 	{ MODKEY,                       XK_F5,     spawn,          {.v = downbrtt } },
 	{ MODKEY,                       XK_F6,     spawn,          {.v = upbrtt } },
 	{ MODKEY,			XK_Print,  spawn,          {.v = (const char*[]){ "/usr/bin/scrot", NULL } } },
