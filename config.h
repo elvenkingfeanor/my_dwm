@@ -44,6 +44,8 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "claws-mail", NULL,  NULL,		0,         	1,          0,           0,        -1 },
+	{ "obs",	NULL,  NULL,		0,         	1,          0,           0,        -1 },
 	{ "st-256color", NULL,  NULL,           0,         	0,          1,           0,        -1 },
 	{ NULL,      NULL,     "Event Tester",  0,         	0,          0,           1,        -1 }, /* xev */
 	{ NULL,	    "spterm",	NULL,		SPTAG(0),	1,	    1,		 1,	   -1 },
@@ -81,10 +83,12 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, "-l", "20", NULL };
 static const char *termcmd[]  = { "/usr/local/bin/st", NULL };
-static const char *upvol[] = { "/usr/bin/pamixer", "-u", "-i", "5", NULL };
-static const char *downvol[] = { "/usr/bin/pamixer", "-u", "-d", "5", NULL };
-static const char *mute[] = { "/usr/bin/pamixer", "-t", NULL };
-static const char *mic[] = { "/usr/bin/amixer", "-q", "set", "Capture", "toggle", NULL };
+static const char *upvol[] = { "/usr/bin/wpctl", "set-volume", "-l", "1.5", "@DEFAULT_AUDIO_SINK@", "5%+", NULL }; /* raise volume with limit at 150% */
+static const char *downvol[] = { "/usr/bin/wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-", NULL };
+static const char *mute[] = { "/usr/bin/wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
+static const char *mic[] = { "/usr/bin/wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL };
+static const char *micvolup[] = { "/usr/bin/wpctl", "set-volume", "-l", "1.5", "@DEFAULT_AUDIO_SOURCE@", "5%+", NULL };
+static const char *micvoldown[] = { "/usr/bin/wpctl", "set-volume", "@DEFAULT_AUDIO_SOURCE@", "5%-", NULL };
 static const char *upbrtt[] = { "/usr/bin/light", "-A", "5", NULL };
 static const char *downbrtt[] = { "/usr/bin/light", "-U", "5", NULL };
 
@@ -99,6 +103,8 @@ static const Key keys[] = {
 	{ MODKEY,			XK_F2, 	   spawn,          {.v = downvol } },
 	{ MODKEY,			XK_F1, 	   spawn,          {.v = mute } },
 	{ MODKEY,			XK_F4, 	   spawn,          {.v = mic } },
+	{ MODKEY,			XK_F11,	   spawn,          {.v = micvoldown } },
+	{ MODKEY,			XK_F12,    spawn,          {.v = micvolup } },
 	{ MODKEY,                       XK_F5,     spawn,          {.v = downbrtt } },
 	{ MODKEY,                       XK_F6,     spawn,          {.v = upbrtt } },
 	{ MODKEY,			XK_Print,  spawn,          {.v = (const char*[]){ "/usr/bin/scrot", NULL } } },
@@ -107,7 +113,7 @@ static const Key keys[] = {
 	{ MODKEY,			XK_g, 	   spawn,          SHCMD("/usr/bin/brave") },
 	{ MODKEY,			XK_y, 	   spawn,          SHCMD("st -e /usr/bin/vendor_perl/youtube-viewer") },
 	{ MODKEY,			XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
-	{ MODKEY,     	                XK_m, 	   spawn,          SHCMD("st -e /usr/bin/claws-mail") },
+	{ MODKEY,     	                XK_m, 	   spawn,          SHCMD("st -e /usr/bin/aerc") },
 	{ MODKEY|ShiftMask,		XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
 	{ MODKEY,            	        XK_b, 	   spawn,          {.v = (const char*[]){ "bookmarkthis", NULL } } },	
 	{ MODKEY,            	        XK_Insert, spawn,          SHCMD("/usr/bin/grep -v '^#' ~/.local/share/bookmarks | /usr/local/bin/dmenu -i -l 20 | /usr/bin/cut -d' ' -f1 | /usr/bin/xclip -selection clipboard") },
