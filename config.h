@@ -1,14 +1,12 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static unsigned int borderpx  = 1;        /* border pixel of windows */
-static unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
-static int showbar            = 1;        /* 0 means no bar */
-static int topbar             = 1;        /* 0 means bottom bar */
-static char font[]            = "JetBrainsMono:size=11:antialias=true";
-static char dmenufont[]       = "JetBrainsMono:size=11:antialias=true";
-static const char *fonts[]          = { font };
+static const int showbar            = 1;        /* 0 means no bar */
+static const int topbar             = 1;        /* 0 means bottom bar */
+static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Regular:size=11:antialias=true:autohint=true", "NotoColorEmoji:style=Regular:size=12" };
 static char normbgcolor[]           = "#282828";
 static char normbordercolor[]       = "#a89984";
 static char normfgcolor[]           = "#ebdbb2";
@@ -26,7 +24,7 @@ typedef struct {
 	const void *cmd;
 } Sp;
 const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spnote",  "-g", "144x41", "-e", "nvim", NULL };
+const char *spcmd2[] = {"st", "-n", "spnote", "-g", "150x36", "-e", "nvim", NULL };
 const char *spcmd3[] = {"st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
@@ -37,26 +35,25 @@ static Sp scratchpads[] = {
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "claws-mail", NULL,  NULL,		0,         	1,          0,           0,        -1 },
-	{ "obs",	NULL,  NULL,		0,         	1,          0,           0,        -1 },
-	{ "st-256color", NULL,  NULL,           0,         	0,          1,           0,        -1 },
-	{ NULL,      NULL,     "Event Tester",  0,         	0,          0,           1,        -1 }, /* xev */
-	{ NULL,	    "spterm",	NULL,		SPTAG(0),	1,	    1,		 1,	   -1 },
-	{ NULL,	    "spnote",	NULL,		SPTAG(1),	1,	    1,           1,	   -1 },
-	{ NULL,	    "spcalc",	NULL,		SPTAG(2),	1,          1,		 1,	   -1 },
+	{ "claws-mail",    NULL,     NULL,           0,         1,          0,           0,        -1 },
+	{ "obs", NULL,     NULL,           1 << 8,    1,          0,          0,        -1 },
+	{ "st-256color",      NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ NULL,      NULL,    "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+	{ NULL,   "spterm",   NULL,          SPTAG(0), 1,	      1,	   1,        -1 },
+	{ NULL,	  "spnote",   NULL,	     SPTAG(1), 1,	      1,	   1,        -1 },
+	{ NULL,	  "spcalc",   NULL,	     SPTAG(2), 1,	      1,           1,        -1 },
 };
 
 /* layout(s) */
-static float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
-static int nmaster     = 1;    /* number of clients in master area */
-static int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const int nmaster     = 1;    /* number of clients in master area */
+static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
@@ -65,8 +62,6 @@ static const Layout layouts[] = {
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
-
-#include <X11/XF86keysym.h>
 
 /* key definitions */
 #define MODKEY Mod4Mask
@@ -81,13 +76,13 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, "-l", "20", NULL };
-static const char *termcmd[]  = { "/usr/local/bin/st", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
+static const char *termcmd[]  = { "st", NULL };
 static const char *upvol[] = { "/usr/bin/wpctl", "set-volume", "-l", "1.5", "@DEFAULT_AUDIO_SINK@", "5%+", NULL }; /* raise volume with limit at 150% */
 static const char *downvol[] = { "/usr/bin/wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-", NULL };
 static const char *mute[] = { "/usr/bin/wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
 static const char *mic[] = { "/usr/bin/wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL };
-static const char *micvolup[] = { "/usr/bin/wpctl", "set-volume", "-l", "1.5", "@DEFAULT_AUDIO_SOURCE@", "5%+", NULL };
+static const char *micvolup[] = { "/usr/bin/wpctl", "set-volume", "-l", "1.5", "@DEFAULT_AUDIO_SOURCE@", "5%+", NULL }; /* raise mic vol till 150% */
 static const char *micvoldown[] = { "/usr/bin/wpctl", "set-volume", "@DEFAULT_AUDIO_SOURCE@", "5%-", NULL };
 static const char *upbrtt[] = { "/usr/bin/light", "-A", "5", NULL };
 static const char *downbrtt[] = { "/usr/bin/light", "-U", "5", NULL };
@@ -107,17 +102,19 @@ static const Key keys[] = {
 	{ MODKEY,			XK_F12,    spawn,          {.v = micvolup } },
 	{ MODKEY,                       XK_F5,     spawn,          {.v = downbrtt } },
 	{ MODKEY,                       XK_F6,     spawn,          {.v = upbrtt } },
-	{ MODKEY,			XK_Print,  spawn,          {.v = (const char*[]){ "/usr/bin/scrot", NULL } } },
+	{ MODKEY,			XK_Print,  spawn,          {.v = (const char*[]){ "screenshot", NULL } } },
+	{ MODKEY|ShiftMask,		XK_Print,  spawn,          {.v = (const char*[]){ "winscreenshot", NULL } } },
 	{ MODKEY,		        XK_h,	   spawn,	   SHCMD("st -e /usr/bin/htop") },
 	{ MODKEY,        	        XK_f, 	   spawn,          SHCMD("/usr/bin/librewolf") },
+	{ MODKEY|ShiftMask,        	XK_f, 	   spawn,          SHCMD("/usr/bin/pcmanfm") },
 	{ MODKEY,			XK_g, 	   spawn,          SHCMD("/usr/bin/brave") },
 	{ MODKEY,			XK_y, 	   spawn,          SHCMD("st -e /usr/bin/vendor_perl/youtube-viewer") },
 	{ MODKEY,			XK_e, 	   spawn,          SHCMD("st -e /usr/bin/nvim") },
+	{ MODKEY,			XK_n, 	   spawn,          SHCMD("st -e /usr/bin/newsraft") },
 	{ MODKEY,     	                XK_m, 	   spawn,          SHCMD("st -e /usr/bin/aerc") },
 	{ MODKEY|ShiftMask,		XK_l, 	   spawn,          SHCMD("/usr/local/bin/slock") },
 	{ MODKEY,            	        XK_b, 	   spawn,          {.v = (const char*[]){ "bookmarkthis", NULL } } },	
 	{ MODKEY,            	        XK_Insert, spawn,          SHCMD("/usr/bin/grep -v '^#' ~/.local/share/bookmarks | /usr/local/bin/dmenu -i -l 20 | /usr/bin/cut -d' ' -f1 | /usr/bin/xclip -selection clipboard") },
-
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
